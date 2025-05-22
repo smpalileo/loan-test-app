@@ -1,4 +1,4 @@
-import { LoanType } from "@/store/store";
+import { EmploymentStatus, LoanType } from "@/store/store";
 import { z } from "zod";
 
 export const CustomerInfoSchema = z
@@ -15,10 +15,17 @@ export const CustomerInfoSchema = z
     phoneNumber: z
       .string()
       .regex(/^\+?[1-9]\d{1,14}$/, { message: "Invalid phone number." }),
-    employmentStatus: z.enum(["employed", "self-employed", "unemployed"], {
-      required_error: "Please select an employment status.",
-      invalid_type_error: "Please select a valid employment status.",
-    }),
+    employmentStatus: z.enum(
+      [
+        EmploymentStatus.Employed,
+        EmploymentStatus.SelfEmployed,
+        EmploymentStatus.Unemployed,
+      ],
+      {
+        required_error: "Please select an employment status.",
+        invalid_type_error: "Please select a valid employment status.",
+      },
+    ),
     employerName: z
       .string()
       .max(100, { message: "Employer name must be 100 characters or less." })
@@ -26,7 +33,7 @@ export const CustomerInfoSchema = z
   })
   .superRefine((data, ctx) => {
     if (
-      data.employmentStatus === "employed" &&
+      data.employmentStatus === EmploymentStatus.Employed &&
       (!data.employerName || data.employerName.trim() === "")
     ) {
       ctx.addIssue({
