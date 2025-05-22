@@ -13,7 +13,10 @@ export async function POST(req: NextRequest) {
       );
     }
     db.loans.insert(loanOfferData);
-    return NextResponse.json({ message: "Loan offer info saved" });
+    return NextResponse.json(
+      { message: "Loan offer info saved" },
+      { status: 201 },
+    );
   } catch (error) {
     console.error("Error processing loan offer info:", error);
     return NextResponse.json(

@@ -13,7 +13,10 @@ export async function POST(req: NextRequest) {
       );
     }
     db.customers.insert(customerInfoData);
-    return NextResponse.json({ message: "Customer info saved" });
+    return NextResponse.json(
+      { message: "Customer info saved" },
+      { status: 201 },
+    );
   } catch (error) {
     console.error("Error processing customer info:", error);
     return NextResponse.json(
