@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     }
     db.customers.insert(customerInfoData);
     return NextResponse.json(
-      { message: "Customer info saved" },
+      { message: "Customer info saved", customer: customerInfoData },
       { status: 201 },
     );
   } catch (error) {
@@ -25,3 +25,14 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+/**
+ * {
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@example.com",
+  "phoneNumber": "+11234567890",
+  "employmentStatus": "employed",
+  "employerName": "Example Corp"
+}
+ */
