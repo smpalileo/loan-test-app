@@ -13,11 +13,11 @@ export async function POST(req: NextRequest) {
       );
     }
     db.loans.insert(loanOfferData);
-    return NextResponse.json({ message: "Customer info saved" });
+    return NextResponse.json({ message: "Loan offer info saved" });
   } catch (error) {
-    console.error("Error processing customer info:", error);
+    console.error("Error processing loan offer info:", error);
     return NextResponse.json(
-      { error: "Failed to process customer info" },
+      { error: "Failed to process loan offer info" },
       { status: 500 },
     );
   }
