@@ -84,3 +84,7 @@ export const LoanDetailsSchema = z
       }
     }
   });
+
+export const LoanOfferDto = z.object({
+  id: z.coerce.number().min(1, { message: "id must be at least 1." }),
+});
