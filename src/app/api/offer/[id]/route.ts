@@ -1,17 +1,23 @@
 import { LoanOfferDto } from "@/lib/schema";
-import { getLoanOffers } from "../../services/offers";
+import { getLoanOffers } from "@/app/services/offers";
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } },
+) {
   try {
-    const { id } = await request.json();
+    const id = await parseInt(params.id);
+    console.log("id", id);
     const validation = LoanOfferDto.safeParse({ id });
+
     if (!validation.success) {
       return NextResponse.json(
         { errors: validation.error.errors },
         { status: 400 },
       );
     }
+    // validation.data.id is now a number if parsing was successful
     const offers = await getLoanOffers(validation.data.id);
     return NextResponse.json({ offers });
   } catch (error) {
