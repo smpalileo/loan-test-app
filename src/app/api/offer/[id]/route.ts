@@ -7,8 +7,7 @@ export async function GET(
   { params }: { params: { id: string } },
 ) {
   try {
-    const id = await parseInt(params.id);
-    console.log("id", id);
+    const id = parseInt((await params).id);
     const validation = LoanOfferDto.safeParse({ id });
 
     if (!validation.success) {
