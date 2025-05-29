@@ -6,8 +6,6 @@ import { z } from "zod";
 import { CustomerInfoSchema } from "@/lib/schema";
 import { EmploymentStatus } from "@/store/store";
 import { cn } from "@/lib/utils";
-
-// UI Component Imports - Assuming these exist from your shadcn/ui setup or similar
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -24,12 +22,14 @@ export type CustomerInfoFormData = z.infer<typeof CustomerInfoSchema>;
 interface CustomerInfoFormProps {
   onSubmit: (data: CustomerInfoFormData) => void;
   defaultValues?: Partial<CustomerInfoFormData>;
+  isLoading?: boolean;
   className?: string;
 }
 
 export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
   onSubmit,
   defaultValues,
+  isLoading,
   className,
 }) => {
   const {
@@ -127,8 +127,7 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           render={({ field }) => (
             <Select
               onValueChange={field.onChange}
-              value={field.value ?? ""} // Ensure value is a string, Radix Select might expect this
-              // defaultValue={field.value} // Or use defaultValue from props if that's preferred for initial render
+              value={field.value ?? ""}
             >
               <SelectTrigger
                 id="employmentStatus"
@@ -176,8 +175,9 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
       <Button
         type="submit"
         className="w-full"
+        disabled={isLoading}
       >
-        Next: Loan Details
+        {isLoading ? "Submitting..." : "Next: Loan Details"}
       </Button>
     </form>
   );

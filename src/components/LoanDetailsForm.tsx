@@ -3,49 +3,47 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { LoanDetailsSchema } from "@/lib/schema"; // Assuming schema.ts is in src/lib
-import { LoanType } from "@/store/store"; // Assuming store.ts is in src/store
+import { LoanDetailsSchema } from "@/lib/schema";
+import { LoanType } from "@/store/store";
 import { cn } from "@/lib/utils";
-
-// UI Component Imports - Replace with your actual component paths
-// These are placeholders based on common patterns with Radix/shadcn
-import { Input } from "@/components/ui/input"; // Placeholder
-import { Button } from "@/components/ui/button"; // Placeholder
-import { Label } from "@/components/ui/label"; // Placeholder
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // Placeholder
+} from "@/components/ui/select";
 
-// Infer the type from the Zod schema
 export type LoanDetailsFormData = z.infer<typeof LoanDetailsSchema>;
 
 interface LoanDetailsFormProps {
   onSubmit: (data: LoanDetailsFormData) => void;
   defaultValues?: Partial<LoanDetailsFormData>;
+  isLoading?: boolean;
   className?: string;
 }
 
 export const LoanDetailsForm: React.FC<LoanDetailsFormProps> = ({
   onSubmit,
   defaultValues,
+  isLoading,
   className,
 }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control, // For controlled components like Radix Select
-    watch, // To watch values for conditional logic if needed
+    control,
+    watch,
   } = useForm<LoanDetailsFormData>({
     resolver: zodResolver(LoanDetailsSchema),
     defaultValues: {
-      loanAmount: defaultValues?.loanAmount || undefined, // Or a sensible default like 2000
+      loanAmount: defaultValues?.loanAmount || undefined,
       loanType: defaultValues?.loanType || undefined,
-      loanTerm: defaultValues?.loanTerm || undefined, // Or a sensible default like 1
+      loanTerm: defaultValues?.loanTerm || undefined,
       deposit: defaultValues?.deposit || undefined,
     },
   });
@@ -54,7 +52,6 @@ export const LoanDetailsForm: React.FC<LoanDetailsFormProps> = ({
     onSubmit(data);
   };
 
-  // Watch loanType to conditionally show/hide or adjust deposit logic if needed in UI
   const loanType = watch("loanType");
 
   return (
@@ -86,8 +83,7 @@ export const LoanDetailsForm: React.FC<LoanDetailsFormProps> = ({
           render={({ field }) => (
             <Select
               onValueChange={field.onChange}
-              value={field.value ?? ""} // Ensure value is a string
-              // defaultValue={field.value}
+              value={field.value ?? ""}
             >
               <SelectTrigger
                 id="loanType"
@@ -129,25 +125,30 @@ export const LoanDetailsForm: React.FC<LoanDetailsFormProps> = ({
         )}
       </div>
 
-      <div>
-        <Label htmlFor="deposit">Deposit Amount ($) (Optional)</Label>
-        <Input
-          id="deposit"
-          type="number"
-          {...register("deposit")}
-          placeholder="e.g., 2000"
-          className={cn(errors.deposit && "border-red-500")}
-        />
-        {errors.deposit && (
-          <p className="mt-1 text-xs text-red-500">{errors.deposit.message}</p>
-        )}
-      </div>
+      {loanType === LoanType.Vehicle && (
+        <div>
+          <Label htmlFor="deposit">Deposit Amount ($)</Label>
+          <Input
+            id="deposit"
+            type="number"
+            {...register("deposit")}
+            placeholder="e.g., 2000"
+            className={cn(errors.deposit && "border-red-500")}
+          />
+          {errors.deposit && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.deposit.message}
+            </p>
+          )}
+        </div>
+      )}
 
       <Button
         type="submit"
         className="w-full"
+        disabled={isLoading}
       >
-        Get Loan Offers
+        {isLoading ? "Fetching Offers..." : "Get Loan Offers"}
       </Button>
     </form>
   );
