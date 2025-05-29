@@ -1,6 +1,6 @@
 export enum EmploymentStatus {
   Employed = "Employed",
-  SelfEmployed = "Self-Employed",
+  SelfEmployed = "SelfEmployed",
   Unemployed = "Unemployed",
 }
 
