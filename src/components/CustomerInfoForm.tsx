@@ -70,7 +70,14 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           className={cn(errors.firstName && "border-red-500")}
         />
         {errors.firstName && (
-          <p className="mt-1 text-xs text-red-500">
+          <p
+            style={{
+              color: "magenta",
+              border: "2px solid lime",
+              fontSize: "16px",
+              marginTop: "4px",
+            }}
+          >
             {errors.firstName.message}
           </p>
         )}
@@ -85,7 +92,16 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           className={cn(errors.lastName && "border-red-500")}
         />
         {errors.lastName && (
-          <p className="mt-1 text-xs text-red-500">{errors.lastName.message}</p>
+          <p
+            style={{
+              color: "magenta",
+              border: "2px solid lime",
+              fontSize: "16px",
+              marginTop: "4px",
+            }}
+          >
+            {errors.lastName.message}
+          </p>
         )}
       </div>
 
@@ -99,7 +115,16 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           className={cn(errors.email && "border-red-500")}
         />
         {errors.email && (
-          <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+          <p
+            style={{
+              color: "magenta",
+              border: "2px solid lime",
+              fontSize: "16px",
+              marginTop: "4px",
+            }}
+          >
+            {errors.email.message}
+          </p>
         )}
       </div>
 
@@ -113,7 +138,14 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           className={cn(errors.phoneNumber && "border-red-500")}
         />
         {errors.phoneNumber && (
-          <p className="mt-1 text-xs text-red-500">
+          <p
+            style={{
+              color: "magenta",
+              border: "2px solid lime",
+              fontSize: "16px",
+              marginTop: "4px",
+            }}
+          >
             {errors.phoneNumber.message}
           </p>
         )}
@@ -127,7 +159,8 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           render={({ field }) => (
             <Select
               onValueChange={field.onChange}
-              value={field.value ?? ""}
+              value={field.value ?? ""} // Ensure value is a string, Radix Select might expect this
+              // defaultValue={field.value} // Or use defaultValue from props if that's preferred for initial render
             >
               <SelectTrigger
                 id="employmentStatus"
@@ -149,7 +182,14 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
           )}
         />
         {errors.employmentStatus && (
-          <p className="mt-1 text-xs text-red-500">
+          <p
+            style={{
+              color: "magenta",
+              border: "2px solid lime",
+              fontSize: "16px",
+              marginTop: "4px",
+            }}
+          >
             {errors.employmentStatus.message}
           </p>
         )}
@@ -157,11 +197,11 @@ export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
 
       {employmentStatus === EmploymentStatus.Employed && (
         <div>
-          <Label htmlFor="employerName">Employer Name</Label>
+          <Label htmlFor="employerName">Employer</Label>
           <Input
             id="employerName"
             {...register("employerName")}
-            placeholder="ACME Corp"
+            placeholder="Driva"
             className={cn(errors.employerName && "border-red-500")}
           />
           {errors.employerName && (
