@@ -10,7 +10,7 @@ interface OffersDisplayProps {
 }
 
 interface TableHeaderConfig {
-  key: string; // Unique key for React list rendering
+  key: string;
   label: string;
   headerClassName?: string;
   cellClassName: string;
