@@ -32,10 +32,7 @@ export default function LoanApplicationPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        `${window.location.href}api/customer`,
-        data,
-      );
+      const response = await axios.post(`/api/customer`, data);
       console.log("API Response (Customer Info):", response.data);
       setCustomerInfoData(data);
       setCurrentStep("loanDetails");
@@ -53,10 +50,7 @@ export default function LoanApplicationPage() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        `${window.location.href}api/loan`,
-        data,
-      );
+      const response = await axios.post(`/api/loan`, data);
       console.log("API Response (Loan Application):", response.data.loan);
       const loanId = response.data.loan.id;
 
@@ -75,7 +69,6 @@ export default function LoanApplicationPage() {
       setError("API Error");
       setCurrentStep("submissionError");
     } finally {
-      console.log("Offers:", offers);
       setCurrentStep("offers");
       setIsLoading(false);
     }
