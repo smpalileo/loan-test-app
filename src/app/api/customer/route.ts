@@ -12,9 +12,9 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    db.customers.insert(customerInfoData);
+    const result = db.customers.insert(customerInfoData);
     return NextResponse.json(
-      { message: "Customer info saved", customer: customerInfoData },
+      { message: "Customer info saved", customer: result },
       { status: 201 },
     );
   } catch (error) {

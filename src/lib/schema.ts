@@ -64,9 +64,9 @@ export const LoanDetailsSchema = z
     ),
     loanTerm: z.coerce
       .number()
-      .min(12, { message: "Loan term must be at least 12 months." })
-      .max(84, { message: "Loan term cannot exceed 84 months (7 years)." }),
-    depositAmount: z.coerce
+      .min(1, { message: "Loan term must be at 1 year." })
+      .max(7, { message: "Loan term cannot exceed 7 years." }),
+    deposit: z.coerce
       .number()
       .nonnegative({ message: "Deposit amount cannot be negative." })
       .optional(),
@@ -77,9 +77,9 @@ export const LoanDetailsSchema = z
       const loanAmount = data.loanAmount > 0 ? data.loanAmount : 0;
       const minDeposit = loanAmount * 0.2;
       if (
-        data.depositAmount === undefined ||
-        data.depositAmount === null ||
-        data.depositAmount < minDeposit
+        data.deposit === undefined ||
+        data.deposit === null ||
+        data.deposit < minDeposit
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,

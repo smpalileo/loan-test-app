@@ -16,7 +16,7 @@ export async function GET(
         { status: 400 },
       );
     }
-    // validation.data.id is now a number if parsing was successful
+
     const offers = await getLoanOffers(validation.data.id);
     return NextResponse.json({ offers });
   } catch (error) {

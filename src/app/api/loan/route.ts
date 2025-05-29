@@ -12,9 +12,9 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    db.loans.insert(loanDetailsData);
+    const result = db.loans.insert(loanDetailsData);
     return NextResponse.json(
-      { message: "Loan offer info saved", loan: loanDetailsData },
+      { message: "Loan offer info saved", loan: result },
       { status: 201 },
     );
   } catch (error) {
@@ -32,5 +32,15 @@ export async function POST(req: NextRequest) {
   "loanType": "Vehicle",
   "loanTerm": 48,
   "depositAmount": 4500
+}
+{
+  "loanAmount": 500000,
+  "loanType": "Business",
+  "loanTerm": 72
+}
+  {
+  "loanAmount": 50000,
+  "loanType": "Debt Consolidation",
+  "loanTerm": 48
 }
  */

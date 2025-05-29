@@ -25,9 +25,9 @@ export interface LoanDetailsRecord {
   id: number;
   customerId: number;
   loanType: LoanType;
-  amount: number;
+  loanAmount: number;
   deposit: number; // Will default to 0 if not provided on insert
-  loanTerm: number; // Term in months
+  loanTerm: number; // Term in years
 }
 
 export interface LenderRecord {
@@ -51,7 +51,7 @@ export interface LenderOffer {
   monthlyRepayment: number;
   totalFees: number;
   loanAmount: number;
-  loanTerm: number; // in months
+  loanTerm: number; // in years
 }
 
 export interface LenderFilter {
@@ -159,86 +159,88 @@ export const db = {
 // being able to offer those on their own platforms but still remain within our search filters
 db.lenders.insert({
   lenderName: "Community Bank",
-  interestRate: 0.02,
+  interestRate: 23,
   supportedLoanTypes: [LoanType.DebtConsolidation, LoanType.HomeImprovement],
   minLoanAmount: 5000,
   maxLoanAmount: 250000,
-  minLoanTerm: 12,
-  maxLoanTerm: 72,
+  minLoanTerm: 1,
+  maxLoanTerm: 6,
 });
 db.lenders.insert({
   lenderName: "Quick Loans Inc.",
-  interestRate: 0.09,
+  interestRate: 29,
+  fixedFees: 500,
   supportedLoanTypes: [LoanType.Personal, LoanType.Vehicle],
   minLoanAmount: 1000,
   maxLoanAmount: 60000,
-  minLoanTerm: 6,
-  maxLoanTerm: 48,
+  minLoanTerm: 0.5,
+  maxLoanTerm: 4,
 });
 db.lenders.insert({
   lenderName: "National Credit",
-  interestRate: 0.06,
+  interestRate: 26,
+  percentFees: 0.02,
   supportedLoanTypes: [LoanType.Personal, LoanType.Business, LoanType.Vehicle],
   minLoanAmount: 15000,
   maxLoanAmount: 750000,
-  minLoanTerm: 24,
-  maxLoanTerm: 96,
+  minLoanTerm: 2,
+  maxLoanTerm: 8,
 });
 db.lenders.insert({
   lenderName: "Specialist Cars Finance",
-  interestRate: 0.075,
+  interestRate: 17.5,
   supportedLoanTypes: [LoanType.Vehicle],
   minLoanAmount: 3000,
   maxLoanAmount: 90000,
-  minLoanTerm: 12,
-  maxLoanTerm: 84,
+  minLoanTerm: 1,
+  maxLoanTerm: 7,
 });
 
 db.lenders.insert({
   lenderName: "Affordable Finance Solutions",
-  interestRate: 0.07,
+  interestRate: 27,
   supportedLoanTypes: [LoanType.Personal, LoanType.DebtConsolidation],
   fixedFees: 50,
   percentFees: 0.01,
   minLoanAmount: 2000,
   maxLoanAmount: 40000,
-  minLoanTerm: 12,
-  maxLoanTerm: 60,
+  minLoanTerm: 1,
+  maxLoanTerm: 5,
 });
 
 db.lenders.insert({
   lenderName: "Business Growth Partners",
-  interestRate: 0.055,
+  interestRate: 15.5,
   supportedLoanTypes: [LoanType.Business],
   fixedFees: 200,
-  percentFees: 0.02,
+  percentFees: 0.05,
   minLoanAmount: 25000,
   maxLoanAmount: 1000000,
-  minLoanTerm: 18,
-  maxLoanTerm: 120,
+  minLoanTerm: 1.5,
+  maxLoanTerm: 10,
 });
 
 db.lenders.insert({
   lenderName: "Home Improvers United",
-  interestRate: 0.04,
+  interestRate: 24,
   supportedLoanTypes: [LoanType.HomeImprovement],
-  fixedFees: 100,
+  fixedFees: 1000,
   minLoanAmount: 7000,
   maxLoanAmount: 300000,
-  minLoanTerm: 24,
-  maxLoanTerm: 180,
+  minLoanTerm: 2,
+  maxLoanTerm: 15,
 });
 
 db.lenders.insert({
   lenderName: "Flexible Auto Loans",
-  interestRate: 0.085,
+  interestRate: 18.5,
   supportedLoanTypes: [LoanType.Vehicle],
-  fixedFees: 25,
-  percentFees: 0.015,
+  fixedFees: 250,
+  percentFees: 0.025,
   minLoanAmount: 2000,
   maxLoanAmount: 75000,
-  minLoanTerm: 12,
-  maxLoanTerm: 84,
+  minLoanTerm: 1,
+  maxLoanTerm: 7,
 });
 
-console.log("Total lenders populated:", db.lenders.findAll().length);
+// console.log("Total lenders populated:", db.lenders.findAll().length);
