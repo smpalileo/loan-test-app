@@ -18,7 +18,7 @@ export async function GET(
     }
 
     const offers = await getLoanOffers(validation.data.id);
-    return NextResponse.json({ offers });
+    return NextResponse.json(offers);
   } catch (error) {
     console.error("Error fetching loan offers:", error);
     return NextResponse.json(
