@@ -86,7 +86,7 @@ export const LoanDetailsSchema = z
           message: `For a car purchase, the deposit must be at least 20% of the loan amount (min. $${minDeposit.toFixed(
             2,
           )}).`,
-          path: ["depositAmount"],
+          path: ["deposit"],
         });
       }
     }

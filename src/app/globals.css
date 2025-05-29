@@ -2,26 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background: 0 0% 100%; /* White */
+    --foreground: 224 71% 4%; /* Dark Slate Gray - for text */
+
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 224 71% 4%; /* Dark Slate Gray */
+
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 224 71% 4%; /* Dark Slate Gray */
+
+    --primary: 217 91% 60%; /* Blue */
+    --primary-foreground: 0 0% 100%; /* White - for text on blue buttons */
+
+    --secondary: 220 14% 96.1%; /* Very Light Gray (e.g., Slate 100) */
+    --secondary-foreground: 224 71% 4%; /* Dark Slate Gray - for text on secondary elements */
+
+    --muted: 220 14% 96.1%; /* Very Light Gray (e.g., Slate 100) */
+    --muted-foreground: 215 20% 65%; /* Medium Gray (e.g., Slate 400) - for less important text */
+
+    --accent: 220 14% 93%; /* Light Gray (e.g., Slate 200) - for hover states etc. */
+    --accent-foreground: 217 91% 50%; /* Darker Blue - text on accent */
+
+    --destructive: 0 72% 51%; /* Red (e.g., Tailwind Red 600) */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 220 13% 88%; /* Light Gray (e.g. Slate 300) for borders */
+    --input: 220 13% 88%; /* Light Gray (e.g. Slate 300) for input borders */
+    --ring: 217 91% 65%; /* Lighter Blue - for focus rings */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 13% 18%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 13% 18%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 220 13% 23%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 28%;
+    --input: 220 13% 28%;
+    --ring: 217 91% 65%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+    border-width: 1px;
+    border-style: solid;
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
 }

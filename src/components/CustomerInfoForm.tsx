@@ -1,20 +1,16 @@
 "use client";
 
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CustomerInfoSchema } from "@/lib/schema";
 import { EmploymentStatus } from "@/store/store";
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { cn } from "@/lib/utils";
+
+// UI Component Imports - Assuming these exist from your shadcn/ui setup or similar
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -22,173 +18,167 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
-type CustomerInfoFormValues = z.infer<typeof CustomerInfoSchema>;
+export type CustomerInfoFormData = z.infer<typeof CustomerInfoSchema>;
 
-const CustomerInfoForm: React.FC = () => {
-  const form = useForm<CustomerInfoFormValues>({
+interface CustomerInfoFormProps {
+  onSubmit: (data: CustomerInfoFormData) => void;
+  defaultValues?: Partial<CustomerInfoFormData>;
+  className?: string;
+}
+
+export const CustomerInfoForm: React.FC<CustomerInfoFormProps> = ({
+  onSubmit,
+  defaultValues,
+  className,
+}) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    watch,
+  } = useForm<CustomerInfoFormData>({
     resolver: zodResolver(CustomerInfoSchema),
-    // You can add defaultValues here if needed, e.g.:
-    // defaultValues: { firstName: "", lastName: "", email: "", phoneNumber: "", employmentStatus: undefined, employerName: "" },
+    defaultValues: {
+      firstName: defaultValues?.firstName || "",
+      lastName: defaultValues?.lastName || "",
+      email: defaultValues?.email || "",
+      phoneNumber: defaultValues?.phoneNumber || "",
+      employmentStatus: defaultValues?.employmentStatus || undefined,
+      employerName: defaultValues?.employerName || "",
+    },
   });
 
-  const employmentStatus = form.watch("employmentStatus");
-
-  const onSubmit: SubmitHandler<CustomerInfoFormValues> = (data) => {
-    console.log(data);
-    // Handle form submission logic here
+  const handleFormSubmit: SubmitHandler<CustomerInfoFormData> = (data) => {
+    onSubmit(data);
   };
 
+  const employmentStatus = watch("employmentStatus");
+
   return (
-    <Card className="w-full max-w-lg mx-auto">
-      <CardHeader>
-        <CardTitle>Customer Information</CardTitle>
-        <CardDescription>Please fill in your details below.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-6"
-          >
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="John"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      className={cn("space-y-6", className)}
+    >
+      <div>
+        <Label htmlFor="firstName">First Name</Label>
+        <Input
+          id="firstName"
+          {...register("firstName")}
+          placeholder="John"
+          className={cn(errors.firstName && "border-red-500")}
+        />
+        {errors.firstName && (
+          <p className="mt-1 text-xs text-red-500">
+            {errors.firstName.message}
+          </p>
+        )}
+      </div>
 
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Doe"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <div>
+        <Label htmlFor="lastName">Last Name</Label>
+        <Input
+          id="lastName"
+          {...register("lastName")}
+          placeholder="Doe"
+          className={cn(errors.lastName && "border-red-500")}
+        />
+        {errors.lastName && (
+          <p className="mt-1 text-xs text-red-500">{errors.lastName.message}</p>
+        )}
+      </div>
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="john.doe@example.com"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <div>
+        <Label htmlFor="email">Email Address</Label>
+        <Input
+          id="email"
+          type="email"
+          {...register("email")}
+          placeholder="john.doe@example.com"
+          className={cn(errors.email && "border-red-500")}
+        />
+        {errors.email && (
+          <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
+        )}
+      </div>
 
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="tel"
-                      placeholder="e.g., (555) 123-4567"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+      <div>
+        <Label htmlFor="phoneNumber">Phone Number</Label>
+        <Input
+          id="phoneNumber"
+          type="tel"
+          {...register("phoneNumber")}
+          placeholder="+1234567890"
+          className={cn(errors.phoneNumber && "border-red-500")}
+        />
+        {errors.phoneNumber && (
+          <p className="mt-1 text-xs text-red-500">
+            {errors.phoneNumber.message}
+          </p>
+        )}
+      </div>
 
-            <FormField
-              control={form.control}
-              name="employmentStatus"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Employment Status</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select employment status" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.values(EmploymentStatus).map((status) => (
-                        <SelectItem
-                          key={status}
-                          value={status}
-                        >
-                          {status}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {employmentStatus === EmploymentStatus.Employed && (
-              <FormField
-                control={form.control}
-                name="employerName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Employer Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Acme Corp"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
-
-            <Button
-              type="submit"
-              className="w-full"
+      <div>
+        <Label htmlFor="employmentStatus">Employment Status</Label>
+        <Controller
+          name="employmentStatus"
+          control={control}
+          render={({ field }) => (
+            <Select
+              onValueChange={field.onChange}
+              value={field.value ?? ""} // Ensure value is a string, Radix Select might expect this
+              // defaultValue={field.value} // Or use defaultValue from props if that's preferred for initial render
             >
-              Submit
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              <SelectTrigger
+                id="employmentStatus"
+                className={cn(errors.employmentStatus && "border-red-500")}
+              >
+                <SelectValue placeholder="Select employment status" />
+              </SelectTrigger>
+              <SelectContent>
+                {Object.values(EmploymentStatus).map((status) => (
+                  <SelectItem
+                    key={status}
+                    value={status}
+                  >
+                    {status.replace(/([A-Z])/g, " $1").trim()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
+        {errors.employmentStatus && (
+          <p className="mt-1 text-xs text-red-500">
+            {errors.employmentStatus.message}
+          </p>
+        )}
+      </div>
+
+      {employmentStatus === EmploymentStatus.Employed && (
+        <div>
+          <Label htmlFor="employerName">Employer Name</Label>
+          <Input
+            id="employerName"
+            {...register("employerName")}
+            placeholder="ACME Corp"
+            className={cn(errors.employerName && "border-red-500")}
+          />
+          {errors.employerName && (
+            <p className="mt-1 text-xs text-red-500">
+              {errors.employerName.message}
+            </p>
+          )}
+        </div>
+      )}
+
+      <Button
+        type="submit"
+        className="w-full"
+      >
+        Next: Loan Details
+      </Button>
+    </form>
   );
 };
-
-export default CustomerInfoForm;
