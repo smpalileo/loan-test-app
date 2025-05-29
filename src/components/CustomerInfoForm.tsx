@@ -5,17 +5,41 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { CustomerInfoSchema } from "@/lib/schema";
 import { EmploymentStatus } from "@/store/store";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 type CustomerInfoFormValues = z.infer<typeof CustomerInfoSchema>;
 
 const CustomerInfoForm: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CustomerInfoFormValues>({
+  const form = useForm<CustomerInfoFormValues>({
     resolver: zodResolver(CustomerInfoSchema),
+    // You can add defaultValues here if needed, e.g.:
+    // defaultValues: { firstName: "", lastName: "", email: "", phoneNumber: "", employmentStatus: undefined, employerName: "" },
   });
+
+  const employmentStatus = form.watch("employmentStatus");
 
   const onSubmit: SubmitHandler<CustomerInfoFormValues> = (data) => {
     console.log(data);
@@ -23,99 +47,147 @@ const CustomerInfoForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-          First Name
-        </label>
-        <input
-          id="firstName"
-          type="text"
-          {...register("firstName")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName.message}</p>}
-      </div>
+    <Card className="w-full max-w-lg mx-auto">
+      <CardHeader>
+        <CardTitle>Customer Information</CardTitle>
+        <CardDescription>Please fill in your details below.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-6"
+          >
+            <FormField
+              control={form.control}
+              name="firstName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>First Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="John"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <div>
-        <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-          Last Name
-        </label>
-        <input
-          id="lastName"
-          type="text"
-          {...register("lastName")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName.message}</p>}
-      </div>
+            <FormField
+              control={form.control}
+              name="lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Doe"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          {...register("email")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
-      </div>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder="john.doe@example.com"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <div>
-        <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
-          Phone Number
-        </label>
-        <input
-          id="phoneNumber"
-          type="tel"
-          {...register("phoneNumber")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {errors.phoneNumber && <p className="mt-1 text-sm text-red-600">{errors.phoneNumber.message}</p>}
-      </div>
+            <FormField
+              control={form.control}
+              name="phoneNumber"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="e.g., (555) 123-4567"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <div>
-        <label htmlFor="employmentStatus" className="block text-sm font-medium text-gray-700">
-          Employment Status
-        </label>
-        <select
-          id="employmentStatus"
-          {...register("employmentStatus")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        >
-          {Object.values(EmploymentStatus).map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-        {errors.employmentStatus && <p className="mt-1 text-sm text-red-600">{errors.employmentStatus.message}</p>}
-      </div>
+            <FormField
+              control={form.control}
+              name="employmentStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Employment Status</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select employment status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.values(EmploymentStatus).map((status) => (
+                        <SelectItem
+                          key={status}
+                          value={status}
+                        >
+                          {status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-      <div>
-        <label htmlFor="employerName" className="block text-sm font-medium text-gray-700">
-          Employer Name
-        </label>
-        <input
-          id="employerName"
-          type="text"
-          {...register("employerName")}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        />
-        {errors.employerName && <p className="mt-1 text-sm text-red-600">{errors.employerName.message}</p>}
-      </div>
+            {employmentStatus === EmploymentStatus.Employed && (
+              <FormField
+                control={form.control}
+                name="employerName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Employer Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Acme Corp"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
-      <div>
-        <button
-          type="submit"
-          className="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
+            <Button
+              type="submit"
+              className="w-full"
+            >
+              Submit
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 
